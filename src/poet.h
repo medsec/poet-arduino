@@ -2,7 +2,6 @@
 #define _POET_HL_
 
 #include <stdint.h>
-//#include "aesO.h"
 #include "api.h"
 #include "AESLib.h"
 #include "aes.h"
@@ -29,10 +28,6 @@ typedef unsigned char block[BLOCKLEN];
 
 
 struct poet_ctx {
-  //AES_KEY aes_enc;
-  //AES_KEY aes_dec;
-  //AES_KEY aes_lt;
-  //AES_KEY aes_lb;
 
   aes128_ctx_t encdecASM;
   aes128_ctx_t aes_ltASM;

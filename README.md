@@ -4,73 +4,44 @@ poet-arduino
 Arduino implementation of POET (Pipelineable On-line Encryption with
 authentication Tag)
 
-This project is just an Arduino ready extract from the AVR-Crypto-Lib.
+This Project is an Arduino ready adaptation from the POET implementation by Christian Forler.
 
-It only packages the ASM implementations of AES into a library ready
-to use in Arduino IDE.
-
-See the LICENSE file for details of the GPLv3 license in which the
-AVR-Crypo-Lib is licensed.
+See the LICENSE file for details of the GPLv3 license in which the POET implementation as well as the AVR-Crypo-Lib used in here are licensed.
 
 
 Installation
 ------------
 
 - Download the files in this repository
-- Copy the `AESLib` folder into `libraries` folder (same level as your `sketch` folder)
-- add `#include <AESLib.h>` in your sketch.
+- Copy the `poet-arduino` folder into the Arduino `libraries` folder (same level as your `sketch` folder)
+- add `#include <poet.h>` in your sketch.
 
 
 Usage
 -----
+
+At the moment, the POET implementation aes128poet without reduced rounds is supported.
+
+An elaborate usage example can be found in the tests.ino sketch, demonstrating the functions for:
+
+1. Both Encryption/Decryption
+-  void keysetup(struct poet_ctx *ctx, const uint8_t key[KEYLEN]);
+-  void process_header(struct poet_ctx *ctx, const uint8_t  *header, uint64_t header_len );
+
+2. Encryption
+-  void encrypt_block(struct poet_ctx *ctx, const uint8_t plaintext[16], uint8_t ciphertext[16]);
+-  void encrypt_final(struct poet_ctx *ctx, const uint8_t *plaintext, uint64_t plen, uint8_t *ciphertext, uint8_t tag[BLOCKLEN]);
+
+3. Decryption
+-  void decrypt_block(struct poet_ctx *ctx, const uint8_t ciphertext[16], uint8_t plaintext[16]);
+-  int decrypt_final(struct poet_ctx *ctx, const uint8_t *ciphertext, uint64_t clen, const uint8_t tag[BLOCKLEN], uint8_t *plaintext);
+
 
 At the moment only 128bit keys are supported, the blocksize is also
 fixed at 128bit.  This means that the key array and possible iv array
 should contain exactly 16 bytes (`uint8_t` or `byte`).  Moreover the
 amount of bytes to encrypt should be mod 16.  (this means you have to
 take care of padding yourself).
-
-The library supports 3 kinds of operations.
-
-1. single block encryption/decryption
--  multiple block encryption/decryption using CBC (single call)
--  multiple block encryption/decryption using CBC (multiple calls)
-
-The single block enc/decryption are the following methods:
-
-```c
-void aes128_enc_single(const uint8_t* key, void* data);
-void aes128_dec_single(const uint8_t* key, void* data);
-```
-
-Usage example:
-	
-```c
-Serial.begin(57600);
-uint8_t key[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-char data[] = "0123456789012345"; //16 chars == 16 bytes
-aes128_enc_single(key, data);
-Serial.print("encrypted:");
-Serial.println(data);
-aes128_dec_single(key, data);
-Serial.print("decrypted:");
-Serial.println(data);
-```
-
-Usage example for AES256:
-	
-```c
-Serial.begin(57600);
-uint8_t key[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
-char data[] = "0123456789012345";
-aes256_enc_single(key, data);
-Serial.print("encrypted:");
-Serial.println(data);
-aes256_dec_single(key, data);
-Serial.print("decrypted:");
-Serial.println(data);
-```
-
 
 
 Disclaimer
