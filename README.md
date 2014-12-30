@@ -25,23 +25,23 @@ At the moment, the POET implementation aes128poet without reduced rounds is supp
 An elaborate usage example can be found in the tests.ino sketch, demonstrating the functions for:
 
 1. Both Encryption/Decryption
--  void keysetup(struct poet_ctx *ctx, const uint8_t key[KEYLEN]);
--  void process_header(struct poet_ctx *ctx, const uint8_t  *header, uint64_t header_len );
+```c
+void keysetup(struct poet_ctx *ctx, const uint8_t key[KEYLEN]);
+void process_header(struct poet_ctx *ctx, const uint8_t  *header, uint64_t header_len );
+```
 
 2. Encryption
--  void encrypt_block(struct poet_ctx *ctx, const uint8_t plaintext[16], uint8_t ciphertext[16]);
--  void encrypt_final(struct poet_ctx *ctx, const uint8_t *plaintext, uint64_t plen, uint8_t *ciphertext, uint8_t tag[BLOCKLEN]);
+```c
+void encrypt_block(struct poet_ctx *ctx, const uint8_t plaintext[16], uint8_t ciphertext[16]);
+void encrypt_final(struct poet_ctx *ctx, const uint8_t *plaintext, uint64_t plen, uint8_t *ciphertext, uint8_t tag[BLOCKLEN]);
+```
 
 3. Decryption
--  void decrypt_block(struct poet_ctx *ctx, const uint8_t ciphertext[16], uint8_t plaintext[16]);
--  int decrypt_final(struct poet_ctx *ctx, const uint8_t *ciphertext, uint64_t clen, const uint8_t tag[BLOCKLEN], uint8_t *plaintext);
+```c
+void decrypt_block(struct poet_ctx *ctx, const uint8_t ciphertext[16], uint8_t plaintext[16]);
+int decrypt_final(struct poet_ctx *ctx, const uint8_t *ciphertext, uint64_t clen, const uint8_t tag[BLOCKLEN], uint8_t *plaintext);
+```
 
-
-At the moment only 128bit keys are supported, the blocksize is also
-fixed at 128bit.  This means that the key array and possible iv array
-should contain exactly 16 bytes (`uint8_t` or `byte`).  Moreover the
-amount of bytes to encrypt should be mod 16.  (this means you have to
-take care of padding yourself).
 
 
 Disclaimer
