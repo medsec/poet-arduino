@@ -27,6 +27,9 @@ typedef unsigned char block[BLOCKLEN];
 #endif
 
 
+//remove for full(10) rounds, else only 4
+#define REDUCED_ROUNDS
+
 struct poet_ctx {
 
   aes128_ctx_t encdecASM;

@@ -13,30 +13,30 @@ Installation
 ------------
 
 - Download the files in this repository
-- Copy the `poet-arduino` folder into the Arduino `libraries` folder (same level as your `sketch` folder)
+- Copy the `poet` folder into the Arduino `libraries` folder (same level as your `sketch` folder)
 - add `#include <poet.h>` in your sketch.
 
 
 Usage
 -----
 
-At the moment, the POET implementation aes128poet without reduced rounds is supported.
+At the moment, the POET implementation aes128poet without reduced rounds as well as with reduced(4) rounds are supported. For switching between modes, comment/uncomment the '#define REDUCED_ROUNDS' in poet.h. 
 
 An elaborate usage example can be found in the tests.ino sketch, demonstrating the functions for:
 
-1. Both Encryption/Decryption
+Both Encryption/Decryption
 ```c
 void keysetup(struct poet_ctx *ctx, const uint8_t key[KEYLEN]);
 void process_header(struct poet_ctx *ctx, const uint8_t  *header, uint64_t header_len );
 ```
 
-2. Encryption
+Encryption
 ```c
 void encrypt_block(struct poet_ctx *ctx, const uint8_t plaintext[16], uint8_t ciphertext[16]);
 void encrypt_final(struct poet_ctx *ctx, const uint8_t *plaintext, uint64_t plen, uint8_t *ciphertext, uint8_t tag[BLOCKLEN]);
 ```
 
-3. Decryption
+Decryption
 ```c
 void decrypt_block(struct poet_ctx *ctx, const uint8_t ciphertext[16], uint8_t plaintext[16]);
 int decrypt_final(struct poet_ctx *ctx, const uint8_t *ciphertext, uint64_t clen, const uint8_t tag[BLOCKLEN], uint8_t *plaintext);

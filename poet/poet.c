@@ -3,10 +3,16 @@
 #include "poet.h"
 #include "gf_mul.h"
 
-//#define TOP_HASH     AES_encrypt_4_wrap(ctx->x, ctx->x, (&ctx->aes_ltASM))
-#define TOP_HASH     AES_encrypt_wrap(ctx->x, ctx->x, (&ctx->aes_ltASM))
-//#define BOTTOM_HASH  AES_encrypt_4_wrap(ctx->y, ctx->y, (&ctx->aes_lbASM))
-#define BOTTOM_HASH  AES_encrypt_wrap(ctx->y, ctx->y, (&ctx->aes_lbASM))
+
+#ifdef REDUCED_ROUNDS
+  #define TOP_HASH     AES_encrypt_4_wrap(ctx->x, ctx->x, (&ctx->aes_ltASM))
+  #define BOTTOM_HASH  AES_encrypt_4_wrap(ctx->y, ctx->y, (&ctx->aes_lbASM))  
+
+#else
+  #define TOP_HASH     AES_encrypt_wrap(ctx->x, ctx->x, (&ctx->aes_ltASM))
+  #define BOTTOM_HASH  AES_encrypt_wrap(ctx->y, ctx->y, (&ctx->aes_lbASM))
+
+#endif
 
 void AES_encrypt_wrap(const unsigned char *in, unsigned char *out, const aes128_ctx_t *key)
 {
